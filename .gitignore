@@ -1,0 +1,14 @@
+# dependencies
+node_modules/
+
+# env
+.env
+.env.*
+
+# build
+dist/
+.next/
+coverage/
+
+# logs
+npm-debug.log*
