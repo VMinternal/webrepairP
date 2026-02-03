@@ -34,11 +34,6 @@ export class Part {
   createdBy: User;
 
   @ManyToMany(() => Device, device => device.parts)
-  @JoinTable({
-    name: 'part_devices',
-    joinColumn: { name: 'part_id' },
-    inverseJoinColumn: { name: 'device_id' },
-  })
   devices: Device[];
 
   @CreateDateColumn({ name: 'created_at' })

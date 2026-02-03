@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToMany } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, JoinTable } from 'typeorm';
 import { Part } from '../parts/part.entity';
 
 @Entity('devices')
@@ -13,5 +13,16 @@ export class Device {
   model: string;
 
   @ManyToMany(() => Part, part => part.devices)
-  parts: Part[];
+  @JoinTable({
+  name: 'device_parts',
+  joinColumn: {
+    name: 'device_id',
+    referencedColumnName: 'id',
+  },
+  inverseJoinColumn: {
+    name: 'part_id',
+    referencedColumnName: 'id',
+  },
+})
+parts: Part[];
 }
