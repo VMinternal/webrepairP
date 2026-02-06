@@ -6,27 +6,25 @@ import {
   UpdateDateColumn,
   OneToMany,
 } from 'typeorm';
-import { UserRole } from '../common/enums/user-role.enum';
+import { Post } from '../posts/post.entity';
 import { Issue } from '../issues/issue.entity';
-import { Part } from '../parts/part.entity';
-import { Post } from '../post/post.entity';
 
 @Entity('users')
 export class User {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ name: 'full_name', length: 100 })
-  fullName: string;
+  @Column()
+  name: string;
 
-  @Column({ length: 150, unique: true })
+  @Column({ unique: true })
   email: string;
 
-  @Column({ name: 'password_hash', type: 'text' })
-  passwordHash: string;
+  @Column()
+  password: string;
 
-  @Column({ type: 'enum', enum: UserRole })
-  role: UserRole;
+  @Column({ default: 'STAFF' })
+  role: string;
 
   @Column({ name: 'is_active', default: true })
   isActive: boolean;
@@ -37,13 +35,11 @@ export class User {
   @UpdateDateColumn({ name: 'updated_at' })
   updatedAt: Date;
 
-  /* relations */
+  // ===== RELATIONS =====
+
+  @OneToMany(() => Post, post => post.createdBy)
+  posts: Post[];
+
   @OneToMany(() => Issue, issue => issue.createdBy)
   issues: Issue[];
-
-  @OneToMany(() => Part, part => part.createdBy)
-  parts: Part[];
-
-  @OneToMany(() => Post, post => post.author)
-  posts: Post[];
 }

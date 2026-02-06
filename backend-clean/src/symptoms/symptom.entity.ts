@@ -1,19 +1,22 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany, JoinColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToOne } from 'typeorm';
 import { Issue } from '../issues/issue.entity';
-import { Vector } from '../vectors/vector.entity';
+import { Vector } from '../vectors/vector.entity'
 
 @Entity('symptoms')
 export class Symptom {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
+  @PrimaryGeneratedColumn()
+  id: number;
 
-  @ManyToOne(() => Issue, issue => issue.symptoms, { onDelete: 'CASCADE' })
-  @JoinColumn({ name: 'issue_id' })
-  issue: Issue;
-
-  @Column({ type: 'text' })
+  @Column()
   content: string;
 
-  @OneToMany(() => Vector, vector => vector.symptom)
-  vectors: Vector[];
+  @ManyToOne(() => Issue, issue => issue.symptoms, {
+    onDelete: 'CASCADE',
+  })
+  issue: Issue;
+
+    // Symptom - Vector (1-1)
+  @OneToOne(() => Vector, vector => vector.symptom)
+  vector: Vector;
 }
+

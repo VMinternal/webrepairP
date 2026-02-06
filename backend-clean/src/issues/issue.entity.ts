@@ -3,10 +3,10 @@ import {
   PrimaryGeneratedColumn,
   Column,
   ManyToOne,
-  OneToMany,
+  JoinColumn,
   CreateDateColumn,
   UpdateDateColumn,
-  JoinColumn,
+  OneToMany,
 } from 'typeorm';
 import { User } from '../users/user.entity';
 import { Symptom } from '../symptoms/symptom.entity';
@@ -16,27 +16,27 @@ export class Issue {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ length: 200 })
+  @Column()
   title: string;
+
+  @Column({ nullable: true })
+  description: string;
+
+  @Column({ nullable: true })
+  causes: string;
+
+  @Column({ nullable: true })
+  solutions: string;
 
   @Column({ length: 200, unique: true })
   slug: string;
 
-  @Column({ type: 'text', nullable: true })
-  description: string;
-
-  @Column({ type: 'text', nullable: true })
-  causes: string;
-
-  @Column({ type: 'text', nullable: true })
-  solutions: string;
+  @OneToMany(() => Symptom, symptom => symptom.issue)
+  symptoms: Symptom[];
 
   @ManyToOne(() => User, user => user.issues)
   @JoinColumn({ name: 'created_by' })
   createdBy: User;
-
-  @OneToMany(() => Symptom, symptom => symptom.issue)
-  symptoms: Symptom[];
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;
