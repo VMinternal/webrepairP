@@ -6,8 +6,10 @@ import {
   UpdateDateColumn,
   OneToMany,
 } from 'typeorm';
-import { Post } from '../posts/post.entity';
+import { Post } from '../post/post.entity';
+import { Part } from '../parts/part.entity';
 import { Issue } from '../issues/issue.entity';
+import { UserRole } from '../common/enums/user-role.enum';
 
 @Entity('users')
 export class User {
@@ -23,8 +25,12 @@ export class User {
   @Column()
   password: string;
 
-  @Column({ default: 'STAFF' })
-  role: string;
+   @Column({
+      type: 'enum',
+      enum: UserRole,
+      default: UserRole.ADMIN,
+    })
+    status: UserRole;
 
   @Column({ name: 'is_active', default: true })
   isActive: boolean;
@@ -39,6 +45,9 @@ export class User {
 
   @OneToMany(() => Post, post => post.createdBy)
   posts: Post[];
+
+   @OneToMany(() => Part, part => part.createdBy)
+  parts: Part[];
 
   @OneToMany(() => Issue, issue => issue.createdBy)
   issues: Issue[];
