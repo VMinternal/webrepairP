@@ -3,12 +3,14 @@ import {
   PrimaryGeneratedColumn,
   Column,
   ManyToOne,
+  OneToMany,
   CreateDateColumn,
   UpdateDateColumn,
   JoinColumn,
 } from 'typeorm';
 
 import { User} from '../users/user.entity';
+import {PartDevice } from './part-devices.entity';
 
 @Entity('part')
 export class Part {
@@ -45,4 +47,7 @@ export class Part {
     @ManyToOne(() => User, user => user.parts)
     @JoinColumn({ name: 'created_by' })
     createdBy: User;
+
+    @OneToMany(() => PartDevice, partDevice => partDevice.part)
+    partDevices: PartDevice[];
 }
