@@ -6,9 +6,11 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   JoinColumn,
+  OneToMany,
 } from 'typeorm';
 import { User } from '../users/user.entity';
 import { PostStatus } from '../common/enums/post-status.enum';
+import { PostTag } from './post-tag.entity';
 
 @Entity('posts')
 export class Post {
@@ -56,5 +58,8 @@ export class Post {
   @ManyToOne(() => User, user => user.posts)
     @JoinColumn({ name: 'created_by' })
     createdBy: User;
+
+    @OneToMany(() => PostTag, postTag => postTag.post)
+postTags: PostTag[];
 
 }
