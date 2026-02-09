@@ -33,13 +33,6 @@ export class Post {
   })
   status: PostStatus;
 
-  // FK: author_id -> users.id
-  @ManyToOne(() => User, user => user.posts, {
-    eager: true,
-    onDelete: 'CASCADE',
-  })
-  author: User;
-
   @CreateDateColumn({
     name: 'created_at',
     type: 'timestamp',
@@ -55,9 +48,12 @@ export class Post {
   updatedAt: Date;
 
   // ===== RELATIONS =====
-  @ManyToOne(() => User, user => user.posts)
-    @JoinColumn({ name: 'created_by' })
-    createdBy: User;
+   @ManyToOne(() => User, user => user.posts, {
+    eager: true,
+    onDelete: 'CASCADE',
+  })
+  @JoinColumn({ name: 'author_id' })
+  author: User;
 
     @OneToMany(() => PostTag, postTag => postTag.post)
 postTags: PostTag[];

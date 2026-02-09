@@ -16,21 +16,20 @@ export class User {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column()
-  name: string;
+   @Column({ name: 'full_name', length: 100 })
+  fullName: string;
 
   @Column({ unique: true })
   email: string;
 
-  @Column()
-  password: string;
+  @Column({ name: 'password_hash', type: 'text' })
+  passwordHash: string;
 
    @Column({
-      type: 'enum',
-      enum: UserRole,
-      default: UserRole.ADMIN,
-    })
-    status: UserRole;
+    type: 'enum',
+    enum: UserRole,
+  })
+  role: UserRole;
 
   @Column({ name: 'is_active', default: true })
   isActive: boolean;
@@ -43,7 +42,7 @@ export class User {
 
   // ===== RELATIONS =====
 
-  @OneToMany(() => Post, post => post.createdBy)
+  @OneToMany(() => Post, post => post.author)
   posts: Post[];
 
    @OneToMany(() => Part, part => part.createdBy)
